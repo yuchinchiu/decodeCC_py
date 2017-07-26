@@ -6,5 +6,7 @@ images/*.jpg
 images
 data
 bin/*.pyc
+bin/*.txt
+obs
 *.wav
 respMapping.txt
