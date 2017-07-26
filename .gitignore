@@ -1,4 +1,3 @@
-
 # files to ignore 
 *.pyc
 *.csv
@@ -9,4 +8,5 @@ bin/*.pyc
 bin/*.txt
 obs
 *.wav
+initTask.txt
 respMapping.txt
