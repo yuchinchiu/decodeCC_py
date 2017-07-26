@@ -1,0 +1,10 @@
+
+# files to ignore 
+*.pyc
+*.csv
+images/*.jpg
+images
+data
+bin/*.pyc
+*.wav
+respMapping.txt
