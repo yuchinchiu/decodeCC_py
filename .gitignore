@@ -4,6 +4,7 @@
 images/*.jpg
 images
 data/*.csv
+data/.ipynb_checkpoints
 bin/*.pyc
 bin/*.txt
 obs
