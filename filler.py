@@ -15,30 +15,16 @@ import sys  # to get file system encoding
 import pandas as pd
 import numpy as np
 
-
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__)).decode(sys.getfilesystemencoding())
 os.chdir(_thisDir)
 
-# YCC: include paths to bin in order to create a subject specific trial sequence
+# include paths to bin in order to create a subject specific trial sequence
 binDir = _thisDir + os.sep + u'bin'
 sys.path.append(binDir)
-from issp_trialGen import fillerGen
 from random import choice
-SRmapping = choice([[1,2,1,2],[1,2,2,1],[2,1,1,2],[2,1,2,1]]) # odd/even, high/low designated response 1=G, 2=J
-SRkey = np.where(np.array(SRmapping)==1,'g','j')   # turned into keyCodes, where and array are functions in numpy
-# color assignment for odd/even and high/low task
-tt = choice([0,1]) # if 0 => [red, blue], if 1 => [blue, red]
-taskColorHex = ["#ff0000","#0000ff"] if tt==0 else ["#0000ff", "#ff0000"]
-taskColorTxt = ["red", "blue"] if tt==0 else ["blue","red"]
-iniTask = fillerGen(SRmapping, taskColorHex)   # create a csv file..
+from isspTrialGen import fillerGen
 
-M = pd.read_csv('trials_issp.csv') # M.columns tells you the header
-M.loc[:,'sbjResp']= None
-M.loc[:,'sbjRT']  = np.nan
-M.loc[:,'sbjACC'] = np.nan
-
-provideFeedback = 1
 
 # Store info about the experiment session
 expName = u'filler'  # from the Builder filename that created this script
@@ -52,8 +38,28 @@ expInfo['expName'] = expName
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s_%s' % (expName, expInfo['participant'])
 
-
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
+
+
+# Generate sbj trial sequences
+SRmapping_full = [['g', 'j', 'g', 'j'], ['g', 'j', 'j', 'g'], ['j', 'g', 'j', 'g'], ['j', 'g', 'g', 'j']]
+
+SRmapping_par = SRmapping_full[int(expInfo['participant'])%4][0:2]
+SRmapping_mag = SRmapping_full[int(expInfo['participant'])%4][2:4]
+# color assignment for odd/even and high/low task
+tt = choice([0,1]) # if 0 => [red, blue], if 1 => [blue, red]
+taskColorHex = ["#ff0000","#0000ff"] if tt==0 else ["#0000ff", "#ff0000"]
+taskColorTxt = ["red", "blue"] if tt==0 else ["blue","red"]
+
+M = fillerGen(SRmapping_par,SRmapping_mag, taskColorHex)
+M.loc[:,'sbjResp']= None
+M.loc[:,'sbjRT']  = np.nan
+M.loc[:,'sbjACC'] = np.nan
+iniTask = M.loc[0,'task']
+
+provideFeedback = 1
+
+
 
 # Setup the Window
 win = visual.Window(
@@ -73,38 +79,39 @@ else:
 
 lines = [line.rstrip('\n') for line in open(os.path.join(binDir, "fillerTaskIns.txt"))]
 lines.append("Perform odd vs. even if numbers are in " + taskColorTxt[0])
-if SRkey[0]=='g':
-    lines.append("Odd numbers:press "  + SRkey[0].title() + "||  Even numbers:press " + SRkey[1].title())
+if SRmapping_par[0]=='g':
+    lines.append("Odd numbers:press "  + SRmapping_par[0].title() + "||  Even numbers:press " + SRmapping_par[1].title())
 else:
-    lines.append("Even numbers:press "  + SRkey[1].title() + "||  Odd numbers:press " + SRkey[0].title())
+    lines.append("Even numbers:press "  + SRmapping_par[1].title() + "||  Odd numbers:press " + SRmapping_par[0].title())
 lines.append("Perform >5 vs. <5 if numbers are in " + taskColorTxt[1])
-if SRkey[2]=='g':
-    lines.append("Greater than 5:press "  + SRkey[2].title() + "||  Smaller than 5:press " + SRkey[3].title())
+
+if SRmapping_mag[0]=='g':
+    lines.append("Greater than 5:press "  + SRmapping_mag[0].title() + "||  Smaller than 5:press " + SRmapping_mag[1].title())
 else:
-    lines.append("Smaller than 5:press "  + SRkey[3].title() + "||  Greater than 5:press " + SRkey[2].title())
-if iniTask[0]==1:
+    lines.append("Smaller than 5:press "  + SRmapping_mag[1].title() + "||  Greater than 5:press " + SRmapping_mag[0].title())
+if iniTask[0]=='par':
     lines.append("You will start with doing just Odd/Even task first")
-    secondTask=2
+    secondTask='mag'
 else:
     lines.append("You will start with greater/smaller than 5 task first")
-    secondTask=1
+    secondTask='par'
 lines.append("")
 lines.append("Memorize that task's rule and press space bar to begin")
 
 # prepare the 2nd task Instruction
 longins=''
-if secondTask==1:
+if secondTask=='par':
     longins=longins+("Perform odd vs. even if numbers are in " + taskColorTxt[0])
-    if SRkey[0]=='g':
-        longins=longins+("\nOdd numbers:press "  + SRkey[0].title() + "||  Even numbers:press " + SRkey[1].title())
+    if SRmapping_par[0]=='g':
+        longins=longins+("\nOdd numbers:press "  + SRmapping_par[0].title() + "||  Even numbers:press " + SRmapping_par[1].title())
     else:
-        longins=longins+("\nEven numbers:press "  + SRkey[1].title() + "||  Odd numbers:press " + SRkey[0].title())
+        longins=longins+("\nEven numbers:press " + SRmapping_par[1].title() + "||  Odd numbers:press " + SRmapping_par[0].title())
 else:
     longins=longins+("Perform >5 vs. <5 if numbers are in " + taskColorTxt[1])
-    if SRkey[2]=='g':
-        longins=longins+("\nGreater than 5:press "  + SRkey[2].title() + "||  Smaller than 5:press " + SRkey[3].title())
+    if SRmapping_mag[0]=='g':
+        longins=longins+("\nGreater than 5:press "  + SRmapping_mag[0].title() + "||  Smaller than 5:press " + SRmapping_mag[1].title())
     else:
-        longins=longins+("\nSmaller than 5:press "  + SRkey[3].title() + "||  Greater than 5:press " + SRkey[2].title())
+        longins=longins+("\nSmaller than 5:press "  + SRmapping_mag[1].title() + "||  Greater than 5:press " + SRmapping_mag[0].title())
 longins=longins+("\n")
 longins=longins+("\nRemember the rule and press space to begin")
 
