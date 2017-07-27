@@ -3,7 +3,7 @@
 *.csv
 images/*.jpg
 images
-data
+data/*.csv
 bin/*.pyc
 bin/*.txt
 obs
