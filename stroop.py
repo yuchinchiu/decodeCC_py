@@ -158,7 +158,7 @@ for trialCNT in range(0,len(M),1):
 
     # Break #############################################
     if (trialCNT>1) & (trialCNT%80 == 0) & (trialCNT<len(M)):    # total =160 x 2 repetition
-        Instruction.setText("Take a break here and press Space to continue")
+        Instruction.setText("Take a break here. \nPress Space to continue")
         ins_response = event.BuilderKeyResponse()
         ins_response.status == NOT_STARTED
         Instruction.setAutoDraw(True)
@@ -188,7 +188,7 @@ for trialCNT in range(0,len(M),1):
         bkIns.setText(M.loc[trialCNT,'blockType'])
         bkIns.setAutoDraw(True)
         continueRoutine = True        
-        routineTimer.add(2.000000)
+        routineTimer.add(3.000000)
         
         while continueRoutine:
             if event.getKeys(keyList=["escape"]):

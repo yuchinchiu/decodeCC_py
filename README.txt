@@ -1,3 +1,4 @@
+7/26 First version created and uploaded to github
 1. Run stroop_practice.py
 	stroop_practice.py will call \bin\trialGen.py and output 3 files 
 	"trials_stroop.csv."

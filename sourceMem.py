@@ -129,7 +129,7 @@ Instruction.setAutoDraw(False)
 routineTimer.reset()   # use this line, when the routine ends with subject making a key press
 
 # Trial Loop ############################################
-for trialCNT in range(0,10,1):
+for trialCNT in range(0,len(M),1):
 
     # ITI ###############################################
     blank.setAutoDraw(True)

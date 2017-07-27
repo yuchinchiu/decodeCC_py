@@ -81,7 +81,7 @@ InsClock = core.Clock()
 Instruction = visual.TextStim(win=win, name='Instruction',
     text = taskInstruction,
     font=u'Arial',
-    pos=(0, 0), height=0.08, wrapWidth=None, ori=0, 
+    pos=(0, 0), height=0.08, wrapWidth=2, ori=0, 
     color=u'black', colorSpace='rgb', opacity=1,
     depth=0.0);
 
@@ -168,7 +168,7 @@ for trialCNT in range(0,len(M),1):
 
     # Break #############################################
     if trialCNT == len(M)/2:    
-        Instruction.setText("Take a break here and press Space to continue")
+        Instruction.setText("Take a break here.\nPress Space to continue")
         ins_response = event.BuilderKeyResponse()
         ins_response.status == NOT_STARTED
         Instruction.setAutoDraw(True)

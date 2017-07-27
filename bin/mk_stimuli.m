@@ -2,7 +2,7 @@ srate = 44100;  % samp/s
 tone_dur = 20;  % in ms
 ramp_dur = 5;
 
-peak_vol = 0.00;    % out of 1 for full dynamic range of wav file
+peak_vol = 0.005;    % out of 1 for full dynamic range of wav file
 freq = [200, 300, 400, 500];
 
 write_html = true;
