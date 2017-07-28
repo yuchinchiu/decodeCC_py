@@ -27,19 +27,6 @@ binDir   = _thisDir + os.sep + u'bin'
 sys.path.append(binDir)
 from trialGen import trialGen
 from random import choice
-respMapping      = choice([[1,2],[2,1]])  # if [1,2] = press g for natural, press j for manmade
-SRkey = np.where(np.array(respMapping)==1,'g','j')
-
-# ############# HOW MANY REPETITION OF THE SAME SET OF STIMULI  ##################
-repetition = 2
-trialGen(respMapping, repetition)   # output 3 csv for later use 
-np.savetxt('respMapping.txt', respMapping)
-
-
-M = pd.read_csv('trials_practice.csv') # M.columns tells you the header
-M.loc[:,'sbjResp']= None
-M.loc[:,'sbjRT']  = np.nan
-M.loc[:,'sbjACC'] = np.nan
 
 
 # Store info about the experiment session
@@ -53,6 +40,28 @@ expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s_%s' % (expName, expInfo['participant'])
+
+
+# Generate sbj trial sequences
+SRmapping_full = [['g', 'j'],['j','g']]
+
+SRmapping = SRmapping_full[int(expInfo['participant'])%2]
+
+
+
+
+# ############# HOW MANY REPETITION OF THE SAME SET OF STIMULI  ##################
+repetition = 2
+trialGen(SRmapping, repetition)   # output 3 csv for later use 
+np.savetxt('respMapping.txt', SRmapping, delimiter=',',fmt="%s") 
+
+
+M = pd.read_csv('trials_practice.csv') # M.columns tells you the header
+M.loc[:,'sbjResp']= None
+M.loc[:,'sbjRT']  = np.nan
+M.loc[:,'sbjACC'] = np.nan
+
+
 
 
 #logFile = logging.LogFile(filename+'.log', level=logging.EXP)
@@ -76,7 +85,10 @@ else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
 
 # Initialize components for Routine "Ins"
-taskInstruction = u'If the object is natural, press ' + SRkey[0].title()+ '\n\nIf the object is man-made, press ' + SRkey[1].title()
+if SRmapping[0]=='g':
+    taskInstruction = u'If the object is natural, press ' + SRmapping[0].title()+ '\n\nIf the object is man-made, press ' + SRmapping[1].title()
+else:
+    taskInstruction = u'If the object is natural, press ' + SRmapping[1].title()+ '\n\nIf the object is man-made, press ' + SRmapping[0].title()
 InsClock = core.Clock()
 Instruction = visual.TextStim(win=win, name='Instruction',
     text = taskInstruction,
