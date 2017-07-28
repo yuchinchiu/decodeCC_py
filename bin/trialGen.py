@@ -4,8 +4,6 @@ Created on Tue Jun 27 09:06:39 2017
 @author: yc180
 
 """
-#respMapping=[1,2]
-#repetition=2
 
 def trialGen(respMapping,repetition):
     
@@ -13,26 +11,23 @@ def trialGen(respMapping,repetition):
     import numpy as np
     import random
     import copy
-    
-    SRmapping=['g','j']
-    repetition = 2
-    
+        
     def myShuffle(ss):
         random.shuffle(ss)    
         return copy.copy(ss)
     
     stimSetList = [1,2,3] # set 4 = practice
     random.shuffle(stimSetList)  # shuffle array elements in place    
-    
-    header = ['bkId','blockType','trialType','stimCat','stimSet','targetStim','distractorStim','corrAns']
-    spMat = pd.DataFrame(np.empty([0,len(header)], dtype=int),columns=header)
-    
     #########################################
     
     # construct Stroop trials
-    t1 = list(np.arange(1,41,1))
+    header = ['bkId','blockType','trialType','stimCat','stimSet','targetStim','distractorStim','corrAns']
+    spMat = pd.DataFrame(np.empty([0,len(header)], dtype=int),columns=header)
+	
+	t1 = list(np.arange(1,41,1))
     t2 = list(np.arange(41,81,1))  # must treat it as a list to concatenate them easily, see line 61
-    # shuffle stimuli to be assigned to each condition
+    
+	# shuffle stimuli to be assigned to each condition
     con_nat = myShuffle(t1)
     con_man = myShuffle(t2)
     inc_nat = myShuffle(t1)
@@ -73,8 +68,7 @@ def trialGen(respMapping,repetition):
             spMat_new = spMat_new.append(block, ignore_index=True)
     
         spMat1 = spMat1.append(spMat_new, ignore_index=True)
-    
-    
+        
     spMat1.distractorStim = spMat1.distractorStim.replace(1,'natural.wav')
     spMat1.distractorStim = spMat1.distractorStim.replace(2,'manmade.wav')
     spMat1.loc[:,'targetStim'] = 'images\\set' + spMat1.loc[:,'stimSet'].astype(str) + '\\' + spMat1.loc[:,'targetStim'].astype(str) + '.jpg' 
@@ -83,7 +77,8 @@ def trialGen(respMapping,repetition):
     spMat1.to_csv('trials_stroop.csv')
     
     #########################################
-    
+    # construct Stroop practice trials
+	
     bkTypePractice=['easy','hard'] # two blocks, one mostly congruent, 2nd mostly incongruent
     practiceM = pd.DataFrame(np.empty([0,len(header)], dtype = int), columns=header)
     for miniBk in range(len(bkTypePractice)):
@@ -109,7 +104,8 @@ def trialGen(respMapping,repetition):
     practiceM.to_csv('trials_practice.csv')
     
     #########################################
-    
+	# construct memory trials
+
     new_nat = myShuffle(t1)
     new_man = myShuffle(t2)
     
@@ -130,8 +126,7 @@ def trialGen(respMapping,repetition):
     block_old.loc[block_old[(block_old.loc[:,'blockType']=='easy') & (block_old.loc[:,'trialType']=='con') & (block_old.loc[:,'stimCat']=='man')].sample(frac=.2).index,'probetrial']=[1,1,1,2,2,2]
     block_old.loc[block_old[(block_old.loc[:,'blockType']=='easy') & (block_old.loc[:,'trialType']=='inc') & (block_old.loc[:,'stimCat']=='nat')].sample(frac=.2).index,'probetrial']=[1,2]
     block_old.loc[block_old[(block_old.loc[:,'blockType']=='easy') & (block_old.loc[:,'trialType']=='inc') & (block_old.loc[:,'stimCat']=='man')].sample(frac=.2).index,'probetrial']=[1,2]
-    
-    
+        
     block_new = pd.DataFrame(np.ones([80,len(header)],dtype=int)*9999,columns=header)
     block_new.loc[:,'targetStim']   = new_nat + new_man
     block_new.loc[:,'stimCat']= ['nat']*40 + ['man']*40
@@ -153,8 +148,8 @@ def trialGen(respMapping,repetition):
     memMat.to_csv('trials_memory.csv')
     
     #########################################
-    
-    
+	# construct source memory trials
+	
     sourceMat = copy.copy(spMat1.loc[0:159,:])
     sourceMat.loc[:,'corrAns']=copy.copy(sourceMat.loc[:,'blockType'])
     sourceMat.corrAns=sourceMat.corrAns.replace('easy','e')
