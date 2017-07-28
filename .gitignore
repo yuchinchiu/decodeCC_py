@@ -7,6 +7,8 @@ data/*.csv
 data/.ipynb_checkpoints
 bin/*.pyc
 bin/*.txt
+bin/vol0.005
+bin/obs
 obs
 *.wav
 initTask.txt
