@@ -46,6 +46,10 @@ filename = _thisDir + os.sep + u'data/%s_%s' % (expName, expInfo['participant'])
 
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
 
+mem_SRmapping=['0','1'][int('99')%2]  # see line 110
+# 0: [v,b,n,m] => defNew, probNew,probOld,defOld
+# 1: [v,b,n,m] => defOld, probOld,probNew,defNew
+
 
 # Start Code - component code to be run before the window creation
 
@@ -106,7 +110,7 @@ distractor.setVolume(1)
 
 SRmapping = visual.ImageStim(
     win=win, name='SRmapping',
-    image=u'images\T3_RespMapping0.jpg', mask=None,
+    image=u'images\T3_RespMapping' + mem_SRmapping +'.jpg', mask=None,
     ori=0, pos=(0, -0.7), size=None,
     color=[1,1,1], colorSpace='rgb', opacity=1,
     flipHoriz=False, flipVert=False,
@@ -256,6 +260,19 @@ for trialCNT in range(0,len(M),1):
 
 # end trial loop
 
+# 0: [v,b,n,m] => defNew, probNew,probOld,defOld
+# 1: [v,b,n,m] => defOld, probOld,probNew,defNew
+if mem_SRmapping=='0':
+    M.sbjResp.replace('v','defNew',inplace=True)
+    M.sbjResp.replace('b','probNew',inplace=True)
+    M.sbjResp.replace('n','probOld',inplace=True)
+    M.sbjResp.replace('m','defOld',inplace=True)
+else:
+    M.sbjResp.replace('m','defNew',inplace=True)
+    M.sbjResp.replace('n','probNw',inplace=True)
+    M.sbjResp.replace('b','probOld',inplace=True)
+    M.sbjResp.replace('v','defOld',inplace=True)
+    
 pd.DataFrame(data=M).to_csv(filename + '.csv')
 
 
