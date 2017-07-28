@@ -21,16 +21,6 @@ import numpy as np
 _thisDir = os.path.dirname(os.path.abspath(__file__)).decode(sys.getfilesystemencoding())
 os.chdir(_thisDir)
 
-# after running practice, there should be a saved respMapping.txt
-
-respMapping = np.loadtxt('respMapping.txt')
-SRkey = np.where(np.array(respMapping)==1,'g','j')
-M = pd.read_csv('trials_stroop.csv') # M.columns tells you the header
-M.loc[:,'sbjResp']= None
-M.loc[:,'sbjRT']  = np.nan
-M.loc[:,'sbjACC'] =np.nan
-
-
 # Store info about the experiment session
 expName = u'stroop'  # from the Builder filename that created this script
 expInfo = {u'session': u'001', u'participant': u''}
@@ -45,6 +35,17 @@ filename = _thisDir + os.sep + u'data/%s_%s' % (expName, expInfo['participant'])
 
 #logFile = logging.LogFile(filename+'.log', level=logging.EXP)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
+
+
+# after running practice, there should be a saved respMapping.txt
+SRmapping = np.loadtxt('respMapping.txt','str')  
+M = pd.read_csv('trials_stroop.csv') # M.columns tells you the header
+M.loc[:,'sbjResp']= None
+M.loc[:,'sbjRT']  = np.nan
+M.loc[:,'sbjACC'] =np.nan
+
+
+
 
 provideFeedback = 0
 
@@ -64,9 +65,12 @@ if expInfo['frameRate'] != None:
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
 
-taskInstruction = u'If the object is natural, press ' + SRkey[0].title()+ '\n\nIf the object is man-made, press ' + SRkey[1].title()
 
 # Initialize components for Routine "Ins"
+if SRmapping[0]=='g':
+    taskInstruction = u'If the object is natural, press ' + SRmapping[0].title()+ '\n\nIf the object is man-made, press ' + SRmapping[1].title()
+else:
+    taskInstruction = u'If the object is natural, press ' + SRmapping[1].title()+ '\n\nIf the object is man-made, press ' + SRmapping[0].title()
 InsClock = core.Clock()
 Instruction = visual.TextStim(win=win, name='Instruction',
     text = taskInstruction,
