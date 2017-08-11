@@ -1,25 +1,28 @@
-7/26 First version created and uploaded to github
-1. Run stroop_practice.py
-	stroop_practice.py will call \bin\trialGen.py and output 3 files 
-	"trials_stroop.csv."
-	"trials_memory.csv"
-	"trials_practice.csv"
-	"respMapping.txt"
-	This file contains subject specific trial sequences.
-	But this file will be overwritten each time stroop_practice.py is ran.
-	After running Stroop.py, it will output \data\stroop_practice_xx.csv [xx=subject #]
-2. Run stroop.py, this will use trials_stroop.csv and respMapping.txt
-	It will output \data\stroop_xx.csv [xx = subject #]
-3. Run filler.py
-	filler.py will call \in\issp_trialGen.py and output a "trials_issp.csv"
-	It will output \data\filler_xx.csv
-3. Thirdly, run memory.py
-	It will use trial sequences generated in "trial_memory.csv"
-	It will output \data\memory_xx.csv
-	* Right now, each image is presented for 2.5 second and won't disapper even a response is made
-4. Finally, run sourceMem.py
-	It will use "trials_sourceMem.csv"
-	It will output \data\sourceMem_xx.csv
+1. Need to set machine volume to "50" (otherwise the setting volume in Psychopy won't work..)
+2. Open up Psychopy
+3. Run Stroop_practice.py  (16 trials) 
+4. Run Stroop.py (160 trials/repetition x2 or x4) [a total of 9 mins for x2]
+5. Run filler.py (208 trials) [a total of 8 mins]
+6. Run memory.py (240 trials) [a total of 12 mins]
+7. Run sourceMem.py (160 trials)  [a total of 8 mins]
+
+
+Notes - 
+stroop_practice.py will call \bin\trialGen.py and output 4 files 
+"trials_practice.csv"
+"trials_stroop.csv."
+"trials_memory.csv"
+"trials_sourceMem.csv"
+
+After running experiment, each subject will have
+(1) stroop_xxx.csv
+(2) filler_xxx.csv
+(3) memory_xxx.csv
+(4) sourceMem_xxx.csv
 
 tone1 = 400Hz.wav (0.01) volume
 tone2 = 400Hz.wav (0.00) volume
+
+
+For stroop task's volume it's set to 0.25 of the machine volume [50% *.25] in the script
+For memory task's volume it's set to 0.5 of the machine volume [50% *.5] in the script

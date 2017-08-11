@@ -53,8 +53,9 @@ SRmapping = SRmapping_full[int(expInfo['participant'])%2]
 # ############# HOW MANY REPETITION OF THE SAME SET OF STIMULI  ##################
 repetition = 2
 trialGen(SRmapping, repetition)   # output 3 csv for later use 
-np.savetxt('respMapping.txt', SRmapping, delimiter=',',fmt="%s") 
 
+#np.savetxt('respMapping.txt', SRmapping, delimiter=',',fmt="%s") 
+#SRmapping = np.loadtxt('respMapping.txt','str')  
 
 M = pd.read_csv('trials_practice.csv') # M.columns tells you the header
 M.loc[:,'sbjResp']= None
@@ -73,7 +74,7 @@ provideFeedback = 1
 
 # Setup the Window
 win = visual.Window(
-    size=(1024, 768), fullscr=False, screen=0,
+    size=(1920, 1080), fullscr=True, screen=0,
     allowGUI=False, allowStencil=False,
     monitor=u'testMonitor', color=[1.000,1.000,1.000], colorSpace='rgb',
     blendMode='avg', useFBO=True)
@@ -84,11 +85,13 @@ if expInfo['frameRate'] != None:
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
 
+win.mouseVisible = False
+
 # Initialize components for Routine "Ins"
 if SRmapping[0]=='g':
     taskInstruction = u'If the object is natural, press ' + SRmapping[0].title()+ '\n\nIf the object is man-made, press ' + SRmapping[1].title()
 else:
-    taskInstruction = u'If the object is natural, press ' + SRmapping[1].title()+ '\n\nIf the object is man-made, press ' + SRmapping[0].title()
+    taskInstruction = u'If the object is man-made, press ' + SRmapping[1].title()+ '\n\nIf the object is natural, press ' + SRmapping[0].title()
 InsClock = core.Clock()
 Instruction = visual.TextStim(win=win, name='Instruction',
     text = taskInstruction,
@@ -149,6 +152,7 @@ while continueRoutine:
     if ins_response.status == STARTED:
         theseKeys = event.getKeys(keyList=['space'])
         if "escape" in theseKeys:
+            win.mouseVisible = True
             core.quit()
         if len(theseKeys) > 0:  # at least one key was pressed, end the routine
             continueRoutine = False
@@ -193,6 +197,7 @@ for trialCNT in range(0,len(M),1):
             if ins_response.status == STARTED:
                 theseKeys = event.getKeys(keyList=['space'])
             if "escape" in theseKeys:
+                win.mouseVisible = True
                 core.quit()
             if len(theseKeys) > 0:  # at least one key was pressed, end the routine
                 continueRoutine = False    
@@ -242,6 +247,7 @@ for trialCNT in range(0,len(M),1):
         if response.status == STARTED:
             theseKeys = event.getKeys(keyList=['g', 'j', 'escape'])
             if "escape" in theseKeys:
+                win.mouseVisible = True
                 core.quit()
             if len(theseKeys) > 0:  # at least one key was pressed
                 if response.keys == []:  # then this was the first keypress
@@ -275,6 +281,7 @@ for trialCNT in range(0,len(M),1):
         routineTimer.add(0.500000) # This is countdown timer
         while continueRoutine:
             if event.getKeys(keyList=["escape"]):
+                win.mouseVisible = True
                 core.quit()
             if routineTimer.getTime() > 0:
                 win.flip()
@@ -315,8 +322,7 @@ while continueRoutine:
 Instruction.setAutoDraw(False)
 routineTimer.reset()   # use this line, when the routine ends with subject making a key press
 
-
-
+win.mouseVisible = True
 logging.flush()
 win.close()
 core.quit()

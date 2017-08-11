@@ -36,9 +36,9 @@ filename = _thisDir + os.sep + u'data/%s_%s' % (expName, expInfo['participant'])
 #logFile = logging.LogFile(filename+'.log', level=logging.EXP)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
 
+SRmapping_full = [['g', 'j'],['j','g']]
+SRmapping = SRmapping_full[int(expInfo['participant'])%2]
 
-# after running practice, there should be a saved respMapping.txt
-SRmapping = np.loadtxt('respMapping.txt','str')  
 M = pd.read_csv('trials_stroop.csv') # M.columns tells you the header
 M.loc[:,'sbjResp']= None
 M.loc[:,'sbjRT']  = np.nan
@@ -53,10 +53,12 @@ provideFeedback = 0
 
 # Setup the Window
 win = visual.Window(
-    size=(1024, 768), fullscr=False, screen=0,
+    size=(1920, 1080), fullscr=True, screen=0,
     allowGUI=False, allowStencil=False,
     monitor=u'testMonitor', color=[1.000,1.000,1.000], colorSpace='rgb',
     blendMode='avg', useFBO=True)
+win.mouseVisible = False
+
 
 # store frame rate of monitor if we can measure it
 expInfo['frameRate'] = win.getActualFrameRate()
@@ -70,7 +72,7 @@ else:
 if SRmapping[0]=='g':
     taskInstruction = u'If the object is natural, press ' + SRmapping[0].title()+ '\n\nIf the object is man-made, press ' + SRmapping[1].title()
 else:
-    taskInstruction = u'If the object is natural, press ' + SRmapping[1].title()+ '\n\nIf the object is man-made, press ' + SRmapping[0].title()
+    taskInstruction = u'If the object is man-made, press ' + SRmapping[1].title()+ '\n\nIf the object is natural, press ' + SRmapping[0].title()
 InsClock = core.Clock()
 Instruction = visual.TextStim(win=win, name='Instruction',
     text = taskInstruction,
@@ -78,6 +80,8 @@ Instruction = visual.TextStim(win=win, name='Instruction',
     pos=(0, 0), height=0.08, wrapWidth=None, ori=0, 
     color=u'black', colorSpace='rgb', opacity=1,
     depth=0.0);
+
+
 
 # Initialize components for Routine "ITI"
 ITIClock = core.Clock()
@@ -107,7 +111,7 @@ target = visual.ImageStim(
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=0.0)
 distractor = sound.Sound('A', secs=-1)
-distractor.setVolume(1)
+distractor.setVolume(.25)
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -130,6 +134,7 @@ while continueRoutine:
     if ins_response.status == STARTED:
         theseKeys = event.getKeys(keyList=['space'])
         if "escape" in theseKeys:
+            win.mouseVisible = True
             core.quit()
         if len(theseKeys) > 0:  # at least one key was pressed, end the routine
             continueRoutine = False
@@ -149,9 +154,10 @@ for trialCNT in range(0,len(M),1):
     blank.setAutoDraw(True)
     event.clearEvents(eventType='keyboard')
     continueRoutine = True
-    routineTimer.add(0.500000) # This is countdown timer
+    routineTimer.add(0.800000) # This is countdown timer
     while continueRoutine:        
         if event.getKeys(keyList=["escape"]):
+            win.mouseVisible = True
             core.quit()
         if routineTimer.getTime() > 0:
             win.flip()
@@ -175,6 +181,7 @@ for trialCNT in range(0,len(M),1):
             if ins_response.status == STARTED:
                 theseKeys = event.getKeys(keyList=['space'])
             if "escape" in theseKeys:
+                win.mouseVisible = True
                 core.quit()
             if len(theseKeys) > 0:  # at least one key was pressed, end the routine
                 continueRoutine = False    
@@ -196,6 +203,7 @@ for trialCNT in range(0,len(M),1):
         
         while continueRoutine:
             if event.getKeys(keyList=["escape"]):
+                win.mouseVisible = True
                 core.quit()
             if routineTimer.getTime() > 0:
                 win.flip()
@@ -209,6 +217,7 @@ for trialCNT in range(0,len(M),1):
     target.setImage(M.loc[trialCNT,'targetStim'])
     distractor.setSound(M.loc[trialCNT,'distractorStim'], secs=1.0)
     target.setAutoDraw(True)
+    distractor.setVolume(.25)
     distractor.play()
     response = event.BuilderKeyResponse()
     response.status == NOT_STARTED
@@ -223,6 +232,7 @@ for trialCNT in range(0,len(M),1):
         if response.status == STARTED:
             theseKeys = event.getKeys(keyList=['g', 'j', 'escape'])
             if "escape" in theseKeys:
+                win.mouseVisible = True
                 core.quit()
             if len(theseKeys) > 0:  # at least one key was pressed
                 if response.keys == []:  # then this was the first keypress
@@ -255,6 +265,7 @@ for trialCNT in range(0,len(M),1):
         routineTimer.add(0.500000) # This is countdown timer
         while continueRoutine:
             if event.getKeys(keyList=["escape"]):
+                win.mouseVisible = True
                 core.quit()
             if routineTimer.getTime() > 0:
                 win.flip()
@@ -283,6 +294,7 @@ while continueRoutine:
     if ins_response.status == STARTED:
         theseKeys = event.getKeys(keyList=['space'])
         if "escape" in theseKeys:
+            win.mouseVisible = True
             core.quit()
         if len(theseKeys) > 0:  # at least one key was pressed, end the routine
             continueRoutine = False
@@ -294,7 +306,7 @@ while continueRoutine:
 Instruction.setAutoDraw(False)
 routineTimer.reset()   # use this line, when the routine ends with subject making a key press
 
-
+win.mouseVisible = True
 logging.flush()
 win.close()
 core.quit()

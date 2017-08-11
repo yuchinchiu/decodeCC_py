@@ -46,7 +46,7 @@ filename = _thisDir + os.sep + u'data/%s_%s' % (expName, expInfo['participant'])
 
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
 
-mem_SRmapping=['0','1'][int('99')%2]  # see line 110
+mem_SRmapping=['0','1'][int(expInfo['participant'])%2]  # see line 110
 # 0: [v,b,n,m] => defNew, probNew,probOld,defOld
 # 1: [v,b,n,m] => defOld, probOld,probNew,defNew
 
@@ -55,10 +55,13 @@ mem_SRmapping=['0','1'][int('99')%2]  # see line 110
 
 # Setup the Window
 win = visual.Window(
-    size=[1024, 768], fullscr=False, screen=0,
+    size=(1920, 1080), fullscr=True, screen=0,
     allowGUI=True, allowStencil=False,
     monitor=u'testMonitor', color=[1.000,1.000,1.000], colorSpace='rgb',
     blendMode='avg', useFBO=True)
+
+win.mouseVisible = False
+
 # store frame rate of monitor if we can measure it
 expInfo['frameRate'] = win.getActualFrameRate()
 if expInfo['frameRate'] != None:
@@ -82,7 +85,7 @@ probeClock = core.Clock()
 probe = visual.TextStim(win=win, name='probe',
     text = probeQuestion,
     font=u'Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    pos=(0, 0), height=0.07, wrapWidth=2, ori=0, 
     color=u'black', colorSpace='rgb', opacity=1,
     depth=0.0);
     
@@ -106,7 +109,7 @@ target = visual.ImageStim(
     texRes=128, interpolate=True, depth=0.0)
 
 distractor = sound.Sound('A', secs=-1)
-distractor.setVolume(1)
+distractor.setVolume(.5)
 
 SRmapping = visual.ImageStim(
     win=win, name='SRmapping',
@@ -125,6 +128,7 @@ routineTimer = core.CountdownTimer()  # to track time remaining of each (non-sli
 ins_response = event.BuilderKeyResponse()
 ins_response.status == NOT_STARTED
 Instruction.setAutoDraw(True)
+SRmapping.setAutoDraw(True)
 continueRoutine = True
 while continueRoutine:
     
@@ -198,6 +202,7 @@ for trialCNT in range(0,len(M),1):
     SRmapping.setAutoDraw(True)
     if ~(M.probetrial.isnull()[trialCNT]):  # IS NOT NULL
         distractor.setSound(M.loc[trialCNT,'probetrial'], secs=1)
+        distractor.setVolume(.5)
         distractor.play()    
     response = event.BuilderKeyResponse()
     response.status == NOT_STARTED
@@ -300,7 +305,7 @@ while continueRoutine:
 Instruction.setAutoDraw(False)
 routineTimer.reset()  # use this line, when the routine ends with subject making a key press
 
-
+win.mouseVisible = True
 logging.flush()
 win.close()
 core.quit()

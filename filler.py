@@ -57,16 +57,19 @@ M.loc[:,'sbjRT']  = np.nan
 M.loc[:,'sbjACC'] = np.nan
 iniTask = M.loc[0,'task']
 
+
 provideFeedback = 1
 
 
 
 # Setup the Window
 win = visual.Window(
-    size=[1024, 768], fullscr=False, screen=0,
+    size=(1920, 1080), fullscr=True, screen=0,
     allowGUI=True, allowStencil=False,
     monitor=u'testMonitor', color=u'white', colorSpace='rgb',
     blendMode='avg', useFBO=True)
+
+win.mouseVisible = False
 
 # store frame rate of monitor if we can measure it
 expInfo['frameRate'] = win.getActualFrameRate()
@@ -89,7 +92,7 @@ if SRmapping_mag[0]=='g':
     lines.append("Greater than 5:press "  + SRmapping_mag[0].title() + "||  Smaller than 5:press " + SRmapping_mag[1].title())
 else:
     lines.append("Smaller than 5:press "  + SRmapping_mag[1].title() + "||  Greater than 5:press " + SRmapping_mag[0].title())
-if iniTask[0]=='par':
+if iniTask=='par':
     lines.append("You will start with doing just Odd/Even task first")
     secondTask='mag'
 else:
@@ -97,6 +100,7 @@ else:
     secondTask='par'
 lines.append("")
 lines.append("Memorize that task's rule and press space bar to begin")
+
 
 # prepare the 2nd task Instruction
 longins=''
@@ -354,8 +358,7 @@ while continueRoutine:
 Instruction.setAutoDraw(False)
 routineTimer.reset()   # use this line, when the routine ends with subject making a key press
 
-
-
+win.mouseVisible = True
 logging.flush()
 win.close()
 core.quit()

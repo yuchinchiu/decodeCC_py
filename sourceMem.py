@@ -47,10 +47,12 @@ logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a f
 
 # Setup the Window
 win = visual.Window(
-    size=[1024, 768], fullscr=False, screen=0,
+    size=(1920, 1080), fullscr=True, screen=0,
     allowGUI=True, allowStencil=False,
     monitor=u'testMonitor', color=[1.000,1.000,1.000], colorSpace='rgb',
     blendMode='avg', useFBO=True)
+
+win.mouseVisible = False
 # store frame rate of monitor if we can measure it
 expInfo['frameRate'] = win.getActualFrameRate()
 if expInfo['frameRate'] != None:
@@ -87,7 +89,7 @@ target = visual.ImageStim(
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=0.0)
 
-probeQuestion= u"Was this picture in an 'easy' or 'hard' block? Press E or H."
+probeQuestion= u"Was this picture in an 'easy' or 'hard' block?\nPress E or H."
 probeClock = core.Clock()
 probe = visual.TextStim(win=win, name='probe',
     text = probeQuestion,
@@ -180,7 +182,7 @@ for trialCNT in range(0,len(M),1):
     response.status == NOT_STARTED
     response.keys = []
 
-    routineTimer.add(1.000000)
+    routineTimer.add(1.200000)
     while continueRoutine and routineTimer.getTime() > 0:
         if response.status == NOT_STARTED:
             response.status = STARTED
@@ -240,9 +242,7 @@ routineTimer.reset()  # use this line, when the routine ends with subject making
 
 
 
-
-
-
+win.mouseVisible = True
 logging.flush()
 win.close()
 core.quit()
