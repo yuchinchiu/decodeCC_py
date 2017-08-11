@@ -5,7 +5,7 @@ Created on Tue Jun 27 09:06:39 2017
 
 """
 
-def trialGen(respMapping,repetition):
+def trialGen(SRmapping,repetition):
     
     import pandas as pd    
     import numpy as np
@@ -23,11 +23,11 @@ def trialGen(respMapping,repetition):
     # construct Stroop trials
     header = ['bkId','blockType','trialType','stimCat','stimSet','targetStim','distractorStim','corrAns']
     spMat = pd.DataFrame(np.empty([0,len(header)], dtype=int),columns=header)
-	
-	t1 = list(np.arange(1,41,1))
+
+    t1 = list(np.arange(1,41,1))
     t2 = list(np.arange(41,81,1))  # must treat it as a list to concatenate them easily, see line 61
     
-	# shuffle stimuli to be assigned to each condition
+    # shuffle stimuli to be assigned to each condition
     con_nat = myShuffle(t1)
     con_man = myShuffle(t2)
     inc_nat = myShuffle(t1)
@@ -78,7 +78,7 @@ def trialGen(respMapping,repetition):
     
     #########################################
     # construct Stroop practice trials
-	
+
     bkTypePractice=['easy','hard'] # two blocks, one mostly congruent, 2nd mostly incongruent
     practiceM = pd.DataFrame(np.empty([0,len(header)], dtype = int), columns=header)
     for miniBk in range(len(bkTypePractice)):
@@ -103,8 +103,8 @@ def trialGen(respMapping,repetition):
     practiceM.drop('stimSet',axis=1, inplace=True)
     practiceM.to_csv('trials_practice.csv')
     
-    #########################################
-	# construct memory trials
+    # ########################################
+    # construct memory trials
 
     new_nat = myShuffle(t1)
     new_man = myShuffle(t2)
@@ -147,9 +147,9 @@ def trialGen(respMapping,repetition):
     memMat.probetrial = memMat.probetrial.replace(2,'tone2.wav')
     memMat.to_csv('trials_memory.csv')
     
-    #########################################
-	# construct source memory trials
-	
+    # ########################################
+    # construct source memory trials
+
     sourceMat = copy.copy(spMat1.loc[0:159,:])
     sourceMat.loc[:,'corrAns']=copy.copy(sourceMat.loc[:,'blockType'])
     sourceMat.corrAns=sourceMat.corrAns.replace('easy','e')
