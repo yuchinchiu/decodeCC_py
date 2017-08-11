@@ -1,15 +1,14 @@
 # files to ignore 
 *.pyc
 *.csv
-images/*.jpg
-images
-data/*.csv
+images/*.*
+data/csv/*.*
+data/*pkl
 data/.ipynb_checkpoints*
 bin/*.pyc
 bin/*.txt
-bin/vol0.005
+bin/*.html
+bin/vol*
 bin/obs
 obs
 *.wav
-initTask.txt
-respMapping.txt
