@@ -1,0 +1,29 @@
+For experimenter:
+1.	Make sure the computer’s volume is set to 50%
+2.	Wipe clean the headphone before each participant
+3.	Make sure they wear the headphone throughout the experiment
+4.	Open Psychopy – Go to File -> Preference 
+a.	Make sure the audio library is set to [‘pygame’]
+5.	Load the experiment scripts and run them sequentially
+a.	stroop_practice.py   - Feel free to repeat this part if the participant isn’t getting the task
+b.	stroop.py [9 min for repetition=2, 18 min for repetition =4]
+c.	filler.py [8 min]
+d.	memory.py [12 min]
+e.	sourceMem.py [8 min]
+Task 1 – Show them the separate sheet of instruction.
+
+Task 2 – 
+(The instructions are pretty clear on the screen except that it’s a lot of words to read. So read through that with them. It’s a task-switching experiment, but they will first go through 2 “single-task” blocks to practice their assigned SR mapping. 
+So right before they start the task, emphasize to them their first task (Color of the task and SR mapping:  ask them to memorize those). 
+The second task and its SR mapping will be shown again at the beginning of the next block. 
+The third block includes both tasks (task-switching). But there will be no more instruction about task colors and their SR mapping.
+
+Task 3 – 
+This is a memory recognition task + (occasional) tone detection task.  
+They will use left middle and index finger for “v” and “b”, and use their right index and middle figure for “n” and “m.”
+These four keys are used for the memory recognition task (2 sec per trial). 
+Occaionally, they’ll get a probe question asking whether they have heard a faint tone or not. 
+For the probe question, it will wait until they make a response(press Y or N, indicated on the screen) and then proceed.
+
+Task 4 – 
+This is the last task. Another memory judgement task. They will be asked to recall whether the image appeared in an easy or a hard block using “E” for easy blocks and “H” for hard blocks.

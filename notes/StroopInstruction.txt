@@ -1,0 +1,15 @@
+In this following experiment, you will perform a couple of tasks and the experimenter will guide you through each task.  
+You will wear the headphone during the entire experiment (as you might hear some words or sounds).
+The headphone has been sanitized with alcohol pads.
+
+Task 1 –
+The first task is an image categorization task. Your task is judge whether the object in the image presented on the screen is an image of a ‘natural’ object (e.g., a cow) or a ‘man-made’ object (e.g., a shovel). 
+Please place your left index finger on the ‘G’ and place your right index figure on ‘J.’ 
+These 2 keys are to be used for indicating your categorization responses. 
+You will first do some practice trials and then perform the main task.
+You will also hear some words through the headphone. However, the word might be ‘natural’ or ‘man-made’ and they might or might not correspond to the categorization response you are trying to make. Remember:  your task is to categorize the image. 
+There will be two kinds of blocks – “Easy” vs. “Hard.”
+For “easy” blocks: the word spoken through the headphone almost always matches the category of the object, which helps your categorization performance.
+For “hard” blocks: the word spoken through the headphone almost never matches the category of the object, which hinders your categorization performance.
+To prepare you, “easy” vs. “hard” instruction will appear at the beginning of every 10 trials.
+You should make use of these instructions to get yourself ready for the following type of trials.
