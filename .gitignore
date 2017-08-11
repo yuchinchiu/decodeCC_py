@@ -1,6 +1,7 @@
 # files to ignore 
 *.pyc
 *.csv
+images
 images/*.*
 data/csv/*.*
 data/*pkl
