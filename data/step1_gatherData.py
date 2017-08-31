@@ -3,6 +3,7 @@
 Created on Fri Aug  4 13:43:14 2017
 
 @author: yc180
+
 """
 
 import os
@@ -10,13 +11,18 @@ from copy import copy
 import pandas as pd
 import numpy as np
 
+version  = 'v2'
 
 #currentDir = os.getcwd()
 currentDir = os.path.dirname(os.path.realpath(__file__))
-dataDir = currentDir + os.sep + 'csv' + os.sep + 'v1' + os.sep
+dataDir = currentDir + os.sep + 'csv' + os.sep + version + os.sep
 
 #%% Do a quick first past to exclude sbj whose stroop task accuracy is too low <75%
-sbjList = range(1,20)  # 1-19
+if version == 'v1':
+    sbjList = range(1,21)  # 1-20
+else:
+    sbjList = range(21,41)  # 21-40
+        
 goodSbjList=[]
 taskName='stroop'
 for S in sbjList:   
@@ -42,7 +48,7 @@ for taskName in taskNameList:
         df.loc[df.sbjACC == 0, 'sbjRT'] = np.nan
     
         sbjMeans = df.groupby(['blockType','trialType']).sbjACC.mean()*100
-        mRT = df.groupby(['blockType','trialType']).sbjRT.mean()*1000
+        mRT = df.groupby(['blockType','trialType']).sbjRT.mean()*1000  # correct trial RTs
         sbjMeans=pd.concat([sbjMeans,mRT],axis=1)
         sbjMeans['sbjId']=S           
         gpResult = pd.concat([gpResult,sbjMeans], axis=0)
@@ -50,7 +56,7 @@ for taskName in taskNameList:
     # output group DataFrame
    
     gpResult.reset_index(inplace=True)
-    gpResult.to_pickle('gp_' + taskName + '.pkl')
+    gpResult.to_pickle('gp_' + taskName + '_' + version +'.pkl')
 
 
 
@@ -94,7 +100,7 @@ for S in goodSbjList:
     gpResult = pd.concat([gpResult,sbjMeans], axis=0)
 # output group DataFrame
 gpResult.reset_index(inplace=True)
-gpResult.to_pickle('gp_memory.pkl')
+gpResult.to_pickle('gp_memory_'  + version + '.pkl')
 
 
 #%%
@@ -116,20 +122,26 @@ for S in goodSbjList:
 
 # output group DataFrame
 gpResult.reset_index(inplace=True)    
-gpResult.to_pickle('gp_filler.pkl')
+gpResult.to_pickle('gp_filler_' + version + '.pkl')
 
 
 
+if version=='v1':
+    excludeSbj.append(11)
+    excludeSbj.append(12)
+else:
+    excludeSbj.append(21)
+    excludeSbj.append(26)
 
-
+#%% use excludeSbj to clean up pkl 
 
 if len(excludeSbj)>0:
     taskNameList = ['stroop','sourceMem','memory','filler']
     for taskName in taskNameList:        
-        gpResult = pd.read_pickle('gp_' + taskName + '.pkl')
+        gpResult = pd.read_pickle('gp_' + taskName + '_' + version + '.pkl')
         for S in excludeSbj:
             gpResult.drop(gpResult[gpResult.sbjId==S].index, axis=0, inplace=True)
         gpResult.reset_index(inplace=True)
-        gpResult.to_pickle('gp_' + taskName + '.pkl')
+        gpResult.to_pickle('gp_' + taskName + '_' + version + '.pkl')
         
         
